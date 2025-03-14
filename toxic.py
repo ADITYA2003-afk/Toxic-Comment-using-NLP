@@ -3,10 +3,27 @@ import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 import speech_recognition as sr
+import os
 
-# Load the model and vectorizer
-model = pickle.load(open('toxic_model.pkl', 'rb'))
-vectorizer = pickle.load(open('vectorizer.pkl', 'rb'))
+try:
+    # Load the model
+    model_path = os.path.join(os.getcwd(), 'toxic_model.pkl')
+    with open(model_path, 'rb') as f:
+        model = pickle.load(f)
+
+    # Load the vectorizer
+    vectorizer_path = os.path.join(os.getcwd(), 'vectorizer.pkl')
+    with open(vectorizer_path, 'rb') as f:
+        vectorizer = pickle.load(f)
+
+    print("Model and vectorizer loaded successfully.")
+
+except FileNotFoundError as e:
+    print(f"Error: {e}. Ensure that the files are in the correct directory.")
+except PermissionError as e:
+    print(f"Error: {e}. Check file permissions.")
+except Exception as e:
+    print(f"An error occurred: {e}")
 
 # Title and layout
 st.title('Toxic Comment Detection')
